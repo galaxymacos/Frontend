@@ -2,8 +2,8 @@
   <section>
     <header><h1>My Friends</h1></header>
     <ul>
-      <friend-contact></friend-contact>
-      <friend-contact></friend-contact>
+      <friend-contact name="Manuel Lorenz" phone-number="01234 78992" email-address="manuel@localhost.com"></friend-contact>
+      <friend-contact name="Julie Jones" phone-number="0987 65431" email-address="julie@localhost.com"></friend-contact>
     </ul>
   </section>
 </template>
@@ -13,8 +13,18 @@ export default {
   data(){
     return {
       friends: [
-        {id: 1, name: 'John'},
-        {id: 2, name: 'Jane'},
+        {
+          id: 'manuel',
+          name: 'Manuel Lorenz',
+          phone: '01234 5678 991',
+          email: 'manuel@localhost.com',
+        },
+        {
+          id: 'julie',
+          name: 'Julie Jones',
+          phone: '09876 543 221',
+          email: 'julie@localhost.com',
+        }
       ]
     }
   }
