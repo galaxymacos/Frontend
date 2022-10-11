@@ -6,7 +6,7 @@
       <friend-contact
           v-for="friend in friends" :key=friend.id
           :id=friend.id :name=friend.name :phone-number=friend.phone :email-address=friend.email :is-favorite=friend.isFavorite
-          @toggle-favorite="toggleFavoriteStatus"></friend-contact>
+          @toggle-favorite="toggleFavoriteStatus" @delete-contact="deleteContact"></friend-contact>
     </ul>
   </section>
 </template>
@@ -41,6 +41,10 @@ export default {
     addFriend(friend){
       friend.id = new Date().toISOString()
       this.friends.push(friend)
+    },
+    deleteContact(id){
+      const friendIndex = this.friends.findIndex(friend => friend.id === id)
+      this.friends.splice(friendIndex, 1)
     }
   }
 }

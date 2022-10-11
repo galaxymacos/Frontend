@@ -1,5 +1,4 @@
 <template>
-
   <li>
     <h2>{{ name }}<span v-if="isFavorite">(Favorite)</span></h2>
     <button @click="toggleFavorite">Toggle Favorite</button>
@@ -8,6 +7,7 @@
       <li><strong>Phone: </strong>{{ phoneNumber }}</li>
       <li><strong>Email: </strong>{{ emailAddress }}</li>
     </ul>
+    <button @click="deleteContact(id)">Delete</button>
   </li>
 </template>
 
@@ -61,6 +61,9 @@ export default {
     },
     toggleFavorite(){
       this.$emit('toggle-favorite', this.id)
+    },
+    deleteContact(id){
+      this.$emit('delete-contact', id)
     }
   },
 }
