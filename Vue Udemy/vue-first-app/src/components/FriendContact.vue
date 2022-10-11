@@ -1,4 +1,5 @@
 <template>
+
   <li>
     <h2>{{ name }}<span v-if="isFavorite">(Favorite)</span></h2>
     <button @click="toggleFavorite">Toggle Favorite</button>
@@ -13,6 +14,8 @@
 
 <script>
 export default {
+
+
   emits: ['toggle-favorite'],
   // emits: {
   //   'toggle-favorite': function(id){
