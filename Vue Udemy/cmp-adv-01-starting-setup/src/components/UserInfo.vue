@@ -1,10 +1,12 @@
 <template>
   <base-card>
-    <header>
+    <template #header>
       <h3>{{ fullName }}</h3>
       <base-badge :type="role" :caption="role.toUpperCase()"></base-badge>
-    </header>
-    <p>{{ infoText }}</p>
+    </template>
+    <template #default>
+      <p>{{ infoText }}</p> <!-- Automatically go to the default slot -->
+    </template>
   </base-card>
 </template>
 
@@ -14,10 +16,4 @@ export default {
 };
 </script>
 
-<style scoped>
-section header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-</style>
+
