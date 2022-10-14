@@ -1,21 +1,18 @@
 <template>
 <ul>
-  <li :class='{active: activeOption==="poor"}'><button type='button' @click='activate("poor")'>Poor</button></li>
-  <li :class='{active: activeOption==="average"}'><button type='button' @click='activate("average")'>Average</button></li>
-  <li :class='{active: activeOption==="great"}'><button type='button' @click='activate("great")' >Great</button></li>
+  <li :class='{active: modelValue==="poor"}'><button type='button' @click='activate("poor")'>Poor</button></li>
+  <li :class='{active: modelValue==="average"}'><button type='button' @click='activate("average")'>Average</button></li>
+  <li :class='{active: modelValue==="great"}'><button type='button' @click='activate("great")' >Great</button></li>
 </ul>
 </template>
 
 <script>
 export default {
-  data(){
-    return {
-      activeOption: null
-    }
-  },
+  props: ['modelValue'],  // modelValue is a special prop name that Vue uses to pass data to a component
+  emits: ['update:modelValue'], // update:modelValue is a special event name that Vue uses to pass data from a component
   methods: {
     activate(option){
-      this.activeOption = option
+      this.$emit('update:modelValue', option)
     }
   }
 }

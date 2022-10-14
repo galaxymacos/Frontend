@@ -48,7 +48,7 @@
       </div>
     </div>
     <div class='form-control'>
-      <RatingControl></RatingControl>
+      <RatingControl v-model='rating'></RatingControl>
     </div>
     <div class='form-control'>
       <input type='checkbox' id='agreeToTerms' name='agreeToTerms' v-model='agreeToTerms'>
@@ -72,6 +72,7 @@ export default {
       referrer: "wom",
       interests: [],
       how: '',
+      rating: null,
       agreeToTerms: false,
       isUsernameValid: "pending"
     }
@@ -83,7 +84,8 @@ export default {
       this.referrer = "wom"
       this.interests = []
       this.how = ''
-      console.log(this.agreeToTerms)
+      console.log(this.rating)
+      this.rating = null
       this.agreeToTerms = false
     },
     validateInput(){
