@@ -1,13 +1,26 @@
 <template>
+  <base-dialog v-if='inputIsInvalid' title='Invalid Input' @close='confirmError'>
+    <template #default>
+      <p>Unfortunately, at least one input value is invalid</p>
+      <p>Please check all inputs and make sure you enter a few characters into each input fields</p>
+    </template>
+    <template #actions>
+      <base-button @click='confirmError'>Okay</base-button>
+    </template>
+  </base-dialog>
   <base-card>
-    <form>
+    <form @submit.prevent='submitForm'>
       <div class='form-control'>
         <label for='title'>Title</label>
         <input type='text' id='title' name='title'>
       </div>
       <div class='form-control'>
-        <label for='description'>Title</label>
+        <label for='description'>Description</label>
         <textarea name='description' id='description' rows='3'></textarea>
+      </div>
+      <div class='form-control'>
+        <label for='link'>Link</label>
+        <input type='url' id='link' name='link'>
       </div>
       <div>
         <base-button type='submit'>Add Resource</base-button>
@@ -18,7 +31,35 @@
 
 <script>
 export default {
-  name: 'AddResource'
+  inject: ['addResource'],
+  data() {
+    return {
+      inputIsInvalid: false
+    }
+  },
+  methods: {
+    submitForm(event){
+
+      const enteredTitle = event.target.querySelector('#title').value;
+      const enteredDescription = event.target.querySelector('#description').value;
+      const enteredLink = event.target.querySelector('#link').value;
+
+      if(enteredTitle.trim() === '' || enteredDescription.trim() === '' || enteredLink.trim() === ''){
+        this.inputIsInvalid = true;
+        return;
+      }
+      const resourceData = {
+        title: enteredTitle,
+        description: enteredDescription,
+        link: enteredLink
+      };
+      this.addResource(resourceData);
+    },
+    confirmError(){
+      this.inputIsInvalid = false;
+    }
+  },
+
 };
 </script>
 
