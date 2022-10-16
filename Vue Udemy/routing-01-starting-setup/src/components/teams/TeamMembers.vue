@@ -38,6 +38,7 @@ export default {
   },
   created() {
     this.initialize(this.teamId);
+    console.log(this.$route.query.order);
   },
   watch: {
     teamId(newTeamId) {
