@@ -7,7 +7,7 @@
     <transition>
       <p v-if='paraIsVisible'>This is only sometimes visible...</p>
     </transition>
-    <transition enter-active-class='para-in' leave-active-class='para-out'>
+    <transition enter-active-class='para-in' leave-active-class='para-out' @before-enter='beforeEnter' @enter='enter' @after-enter='afterEnter' @before-leave='beforeLeave'>
       <p v-if='paraIsVisible'>2nd: This is only sometimes visible...</p>
     </transition>
     <button @click='toggleParagraph'>Toggle Paragraph</button>
@@ -49,6 +49,19 @@ export default {
     },
     toggleParagraph(){
       this.paraIsVisible = !this.paraIsVisible
+    },
+    beforeEnter(el){
+      console.log("Before element enter the HTML document")
+      console.log(el)
+    },
+    enter(){
+      console.log("When element enter the HTML document")
+    },
+    afterEnter(){
+      console.log("After element enter the HTML document")
+    },
+    beforeLeave(){
+      console.log("Before element leave the HTML document")
     }
   },
 };
