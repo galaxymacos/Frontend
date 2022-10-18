@@ -40,6 +40,11 @@ export default {
     this.initialize(this.teamId);
     console.log(this.$route.query.order);
   },
+  beforeRouteUpdate(to, from, next) {
+    console.log('TeamMembers Cmp beforeRouteUpdate')
+    this.initialize(to.params.teamId)
+    next()
+  },
   watch: {
     teamId(newTeamId) {
       this.initialize(newTeamId);
