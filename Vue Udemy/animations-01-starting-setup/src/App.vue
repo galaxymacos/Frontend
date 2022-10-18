@@ -7,9 +7,18 @@
     <transition>
       <p v-if='paraIsVisible'>This is only sometimes visible...</p>
     </transition>
+    <transition enter-active-class='para-in' leave-active-class='para-out'>
+      <p v-if='paraIsVisible'>2nd: This is only sometimes visible...</p>
+    </transition>
     <button @click='toggleParagraph'>Toggle Paragraph</button>
   </div>
-    <base-modal @close="hideDialog" v-if="dialogIsVisible">
+  <div class='container'>
+    <transition name='fade-button' mode='out-in'>
+      <button @click='userIsVisible = false' v-if='userIsVisible'>Hide Users</button>
+      <button @click='userIsVisible = true' v-else>Show Users</button>
+    </transition>
+  </div>
+    <base-modal @close="hideDialog" :on='dialogIsVisible'>
       <p>This is a test dialog!</p>
       <button @click="hideDialog">Close it!</button>
     </base-modal>
@@ -24,7 +33,8 @@ export default {
     return {
       dialogIsVisible: false,
       animatedBlock: false,
-      paraIsVisible: false
+      paraIsVisible: false,
+      userIsVisible: false
     };
   },
   methods: {
@@ -109,12 +119,28 @@ button:active {
 }
 
 .v-leave-active {
-  transition: all 0.3s ease-out;
+  transition: all 0.3s ease-out
 }
 
 .v-leave-to {
   opacity: 0;
   transform: translateY(-30px);
+}
+
+.para-in {
+  animation: fade-in 0.3s ease-out;
+}
+
+.para-out {
+  animation: fade-in 0.3s ease-in reverse;
+}
+
+.fade-button-enter-active {
+  animation: fade-in 0.3s ease-out;
+}
+
+.fade-button-leave-active {
+  animation: fade-in 0.3s ease-in reverse;
 }
 
 
@@ -129,6 +155,16 @@ button:active {
 
   100% {
     transform: translateX(-150px) scale(1);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 100;
   }
 }
 
