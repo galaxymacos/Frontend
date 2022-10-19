@@ -1,14 +1,14 @@
 <template>
+  <div class='container'>
+    <users-list></users-list>
+  </div>
   <div class="container">
     <div class="block" :class='{animate: animatedBlock}'></div>
     <button @click='animateBlock'>Animate</button>
   </div>
   <div class='container'>
-    <transition>
+    <transition :css='false' @before-enter='beforeEnter' @enter='enter' @leave='leave' @enter-cancelled='enterCancelled' @leave-cancelled='leaveCancelled'>
       <p v-if='paraIsVisible'>This is only sometimes visible...</p>
-    </transition>
-    <transition enter-active-class='para-in' leave-active-class='para-out' @before-enter='beforeEnter' @enter='enter' @after-enter='afterEnter' @before-leave='beforeLeave'>
-      <p v-if='paraIsVisible'>2nd: This is only sometimes visible...</p>
     </transition>
     <button @click='toggleParagraph'>Toggle Paragraph</button>
   </div>
@@ -28,13 +28,19 @@
 </template>
 
 <script>
+import UsersList from '@/components/UsersList';
 export default {
+  components: {
+    UsersList
+  },
   data() {
     return {
       dialogIsVisible: false,
       animatedBlock: false,
       paraIsVisible: false,
-      userIsVisible: false
+      userIsVisible: false,
+      enterInterval: null,
+      leaveInterval: null
     };
   },
   methods: {
@@ -53,15 +59,43 @@ export default {
     beforeEnter(el){
       console.log("Before element enter the HTML document")
       console.log(el)
+      el.style.opacity=0
     },
-    enter(){
+    enter(el, done){
       console.log("When element enter the HTML document")
+      let round = 1
+      this.enterInterval = setInterval(() => {
+        el.style.opacity = round * 0.01
+        round += 1
+        if(round > 100){
+          clearInterval(this.enterInterval)
+          done()
+        }
+      }, 20)
     },
     afterEnter(){
       console.log("After element enter the HTML document")
     },
     beforeLeave(){
       console.log("Before element leave the HTML document")
+    },
+    leave(el, done){
+      let opacity = el.style.opacity
+      let round = 0
+      this.leaveInterval = setInterval(() => {
+        el.style.opacity -= 0.02 * opacity
+        round+=1
+        if(round >= 50){
+          done()
+          clearInterval(this.leaveInterval)
+        }
+      }, 20)
+    },
+    enterCancelled(){
+      clearInterval(this.enterInterval)
+    },
+    leaveCancelled(){
+      clearInterval(this.leaveInterval)
     }
   },
 };
@@ -108,54 +142,11 @@ button:active {
   border: 2px solid #ccc;
   border-radius: 12px;
 }
-.animate {
+
+
+.animate {  /* animate rectangle */
   animation: slide-left 0.3s ease-out forwards; /* change to the state value in a regulated duration */
 }
-
-.v-enter-from {
-  opacity: 0;
-  transform: translateY(-30px);
-}
-
-.v-enter-active {
-  transition: all 0.3s ease-out;
-}
-
-.v-enter-to {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.v-leave-from {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.v-leave-active {
-  transition: all 0.3s ease-out
-}
-
-.v-leave-to {
-  opacity: 0;
-  transform: translateY(-30px);
-}
-
-.para-in {
-  animation: fade-in 0.3s ease-out;
-}
-
-.para-out {
-  animation: fade-in 0.3s ease-in reverse;
-}
-
-.fade-button-enter-active {
-  animation: fade-in 0.3s ease-out;
-}
-
-.fade-button-leave-active {
-  animation: fade-in 0.3s ease-in reverse;
-}
-
 
 @keyframes slide-left { /* set up some states */
   0% {
@@ -171,15 +162,11 @@ button:active {
   }
 }
 
-@keyframes fade-in {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 100;
-  }
+.fade-button-enter-active {
+  animation: fade-in 0.3s ease-out;
 }
 
-
+.fade-button-leave-active {
+  animation: fade-in 0.3s ease-in reverse;
+}
 </style>
