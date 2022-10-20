@@ -1,37 +1,15 @@
 <template>
-  <div class='container'>
-    <users-list></users-list>
-  </div>
-  <div class="container">
-    <div class="block" :class='{animate: animatedBlock}'></div>
-    <button @click='animateBlock'>Animate</button>
-  </div>
-  <div class='container'>
-    <transition :css='false' @before-enter='beforeEnter' @enter='enter' @leave='leave' @enter-cancelled='enterCancelled' @leave-cancelled='leaveCancelled'>
-      <p v-if='paraIsVisible'>This is only sometimes visible...</p>
-    </transition>
-    <button @click='toggleParagraph'>Toggle Paragraph</button>
-  </div>
-  <div class='container'>
+  <router-view v-slot='slotProps'>
     <transition name='fade-button' mode='out-in'>
-      <button @click='userIsVisible = false' v-if='userIsVisible'>Hide Users</button>
-      <button @click='userIsVisible = true' v-else>Show Users</button>
+      <component :is='slotProps.Component'></component>
     </transition>
-  </div>
-    <base-modal @close="hideDialog" :on='dialogIsVisible'>
-      <p>This is a test dialog!</p>
-      <button @click="hideDialog">Close it!</button>
-    </base-modal>
-  <div class="container">
-    <button @click="showDialog">Show Dialog</button>
-  </div>
+  </router-view>
 </template>
 
 <script>
-import UsersList from '@/components/UsersList';
 export default {
   components: {
-    UsersList
+    // UsersList
   },
   data() {
     return {
@@ -162,11 +140,42 @@ button:active {
   }
 }
 
+@keyframes slide-right {
+  0% {
+    transform: translateX(0) scale(1);
+  }
+
+  70% {
+    transform: translateX(120px) scale(1.1);
+  }
+
+  100% {
+    transform: translateX(150px) scale(1);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 .fade-button-enter-active {
   animation: fade-in 0.3s ease-out;
 }
 
 .fade-button-leave-active {
   animation: fade-in 0.3s ease-in reverse;
+}
+
+.route-enter-active {
+  animation: slide-left 0.3s ease-out forwards;
+}
+
+.route-leave-active {
+  animation: slide-right 0.3s ease-in reverse;
 }
 </style>

@@ -42,27 +42,24 @@ li {
   text-align: center;
 }
 
-.user-list-enter-from {
-  opacity: 0;
-  transform: translateX(-30px);
-}
-
-.user-list-enter-active {
-  transition: all 1s ease-out;
-}
-
-.user-list-enter-to, .user-list-leave-from {
-  opacity: 1;
-  transform: translateX(0);
-}
-
+.user-list-move, /* apply transition to moving elements */
+.user-list-enter-active,
 .user-list-leave-active {
-  transition: all 1s ease-in;
+  transition: all 0.5s ease;
 }
 
+.user-list-enter-from,
 .user-list-leave-to {
   opacity: 0;
   transform: translateX(30px);
 }
+
+/* ensure leaving items are taken out of layout flow so that moving
+   animations can be calculated correctly. */
+.user-list-leave-active {
+  position: absolute;
+}
+
+
 
 </style>
